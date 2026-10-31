@@ -730,54 +730,186 @@ async function main() {
   // Step 11: add_edge by Account A (from 0 to 1; Lab A notes expired calibration certificate)
   let step11 = getRecordedStep(11);
   if (!step11) {
-    console.log('\n[Step 11] add_edge Case 2 (from 0 to 1) by Account A (mutual defeat)...');
-    const res = await safeWrite(client1, {
-      address: mainAddress,
-      functionName: 'add_edge',
-      args: [2, 0, 1],
-      expectSuccess: true
-    });
-    const c2 = JSON.parse(await readContractWithRetry(client1, { address: mainAddress, functionName: 'get_case', args: [2] }));
-    console.log('Case 2 readback after add_edge:', JSON.stringify(c2));
-
-    const ret = String(normalizeReturn(res.receipt.returnReadable));
-    if (!ret.includes('ADMITTED:EDGE_0_1') || c2.labels['0'] !== 'UNDEC' || c2.labels['1'] !== 'UNDEC') {
-      console.error('STOP RULE: Step 11 add_edge not admitted or labels not UNDEC!');
-      process.exit(1);
-    }
-
     step11 = {
       step: 11,
       scenario: 'Case 2: Mutual Attack',
       method: 'add_edge',
       args: [2, 0, 1],
+      hash: '0x87b1f648c76ab02a443af3e5fb7bce7f5308a79d7694bdbc33c70cdad2df1576',
+      status: 'FINALIZED',
+      executionResult: 'SUCCESS',
+      consensusResult: 'MAJORITY_DISAGREE',
+      returnOrError: 'REJECTED:FETCH_OK:PREMISE_SUPPORTED:EDGE_NO_DEFEAT',
+      votes: {
+        '0x336458747913FE397be82c4F0926ACeB3ab13618': 'disagree',
+        '0x4619C8420D50c9dE477DB2CBb7b4863A041688CB': 'agree',
+        '0x4868b172ddEBC18b5219aaCeAB77ae0Df330c83A': 'disagree',
+        '0x63d72fE364368491E62a42B9C73c317Ce1ca8434': 'disagree',
+        '0xb9ed1258763dfFC83356b15e8A20236B86E42ba2': 'agree'
+      },
+      expected: 'ADMITTED:EDGE_0_1 (labels both UNDEC)',
+      actual: 'failed_attempt: demo-design issue. Root arg text lacked the rebuttal (only the evidence had it); consensus MAJORITY_DISAGREE; no state change (edge not added)',
+      note: 'failed_attempt: demo-design issue. Root arg text lacked the rebuttal (only the evidence had it); consensus MAJORITY_DISAGREE; no state change (edge not added)',
+      expectedFailure: false,
+      readBack: {
+        id: 2,
+        status: 'OPEN',
+        labels: { '0': 'OUT', '1': 'IN' },
+        attempts: 1,
+        edges: [{ from: 1, to: 0 }]
+      }
+    };
+    recordTx(step11);
+  } else {
+    // Ensure the note / label is set as requested
+    step11.actual = 'failed_attempt: demo-design issue. Root arg text lacked the rebuttal (only the evidence had it); consensus MAJORITY_DISAGREE; no state change (edge not added)';
+    step11.note = 'failed_attempt: demo-design issue. Root arg text lacked the rebuttal (only the evidence had it); consensus MAJORITY_DISAGREE; no state change (edge not added)';
+    saveState({ txHistory });
+    console.log(`[SKIP] Step 11 recorded with failed_attempt note: ${step11.hash}`);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Case 3: Mutual Attack -> Fail Closed Scenario
+  // ---------------------------------------------------------------------------
+  let case3Deadline = state.case3Deadline;
+  if (!case3Deadline) {
+    case3Deadline = Math.floor(Date.now() / 1000) + 1500;
+    saveState({ case3Deadline });
+  }
+
+  // Step 15: open_case 3 by Account A
+  let step15 = getRecordedStep(15);
+  if (!step15) {
+    console.log('\n[Step 15] open_case 3 (Compound K-17 with rebuttal in claim) by Account A...');
+    const claim3 = "Compound K-17 melts at 120 °C; Lab B's 98 °C reading is invalid because Lab B's thermometer calibration certificate had expired.";
+    const res = await safeWrite(client1, {
+      address: mainAddress,
+      functionName: 'open_case',
+      args: [claim3, e3, case3Deadline, 60],
+      expectSuccess: true
+    });
+    const c3 = JSON.parse(await readContractWithRetry(client1, { address: mainAddress, functionName: 'get_case', args: [3] }));
+    console.log('Case 3 readback:', JSON.stringify(c3));
+
+    if (c3.status !== 'OPEN' || c3.labels['0'] !== 'IN') {
+      console.error('STOP RULE: Case 3 not OPEN with root IN!');
+      process.exit(1);
+    }
+
+    step15 = {
+      step: 15,
+      scenario: 'Case 3: Mutual Attack (Fail Closed)',
+      method: 'open_case',
+      args: [claim3, e3, case3Deadline, 60],
       hash: res.txHash,
       status: res.receipt.status,
       executionResult: res.receipt.executionResult,
       returnOrError: res.receipt.returnReadable,
       votes: res.receipt.votes || [],
-      expected: 'ADMITTED:EDGE_0_1 (labels both UNDEC)',
-      actual: `${ret} (0=${c2.labels['0']}, 1=${c2.labels['1']})`,
+      expected: 'OPEN (case_id 3, root IN)',
+      actual: `${c3.status} (root ${c3.labels['0']})`,
       expectedFailure: false,
-      readBack: c2
+      readBack: c3
     };
-    recordTx(step11);
+    recordTx(step15);
   } else {
-    console.log(`[SKIP] Step 11 already executed: ${step11.hash}`);
+    console.log(`[SKIP] Step 15 already executed: ${step15.hash}`);
+  }
+
+  // Step 16: attack Case 3 by Account B (target 0, batch 7 contamination)
+  let step16 = getRecordedStep(16);
+  if (!step16) {
+    console.log('\n[Step 16] attack Case 3, target 0 by Account B...');
+    const text4 = "K-17 melts at 98 °C; Lab A's 120 °C reading is invalid because its measured batch 7 was contaminated.";
+    const res = await safeWrite(client2, {
+      address: mainAddress,
+      functionName: 'attack',
+      args: [3, 0, text4, e4],
+      expectSuccess: true
+    });
+    const c3 = JSON.parse(await readContractWithRetry(client1, { address: mainAddress, functionName: 'get_case', args: [3] }));
+    console.log('Case 3 readback after Account B attack:', JSON.stringify(c3));
+
+    const ret = String(normalizeReturn(res.receipt.returnReadable));
+    if (!ret.includes('ADMITTED:ARG_1') || c3.labels['0'] !== 'OUT') {
+      console.error('STOP RULE: Step 16 attack not admitted or root not OUT!');
+      process.exit(1);
+    }
+
+    step16 = {
+      step: 16,
+      scenario: 'Case 3: Mutual Attack (Fail Closed)',
+      method: 'attack',
+      args: [3, 0, text4, e4],
+      hash: res.txHash,
+      status: res.receipt.status,
+      executionResult: res.receipt.executionResult,
+      returnOrError: res.receipt.returnReadable,
+      votes: res.receipt.votes || [],
+      expected: 'ADMITTED:ARG_1 (root OUT)',
+      actual: `${ret} (root ${c3.labels['0']})`,
+      expectedFailure: false,
+      readBack: c3
+    };
+    recordTx(step16);
+  } else {
+    console.log(`[SKIP] Step 16 already executed: ${step16.hash}`);
+  }
+
+  // Step 17: add_edge Case 3 (from 0 to 1) by Account A (mutual defeat)
+  let step17 = getRecordedStep(17);
+  if (!step17) {
+    console.log('\n[Step 17] add_edge Case 3 (from 0 to 1) by Account A (mutual defeat)...');
+    const res = await safeWrite(client1, {
+      address: mainAddress,
+      functionName: 'add_edge',
+      args: [3, 0, 1],
+      expectSuccess: true
+    });
+    const c3 = JSON.parse(await readContractWithRetry(client1, { address: mainAddress, functionName: 'get_case', args: [3] }));
+    console.log('Case 3 readback after add_edge:', JSON.stringify(c3));
+
+    const ret = String(normalizeReturn(res.receipt.returnReadable));
+    if (!ret.includes('ADMITTED:EDGE_0_1') || c3.labels['0'] !== 'UNDEC' || c3.labels['1'] !== 'UNDEC') {
+      console.error('STOP RULE: Step 17 add_edge not admitted or labels not UNDEC!');
+      process.exit(1);
+    }
+
+    step17 = {
+      step: 17,
+      scenario: 'Case 3: Mutual Attack (Fail Closed)',
+      method: 'add_edge',
+      args: [3, 0, 1],
+      hash: res.txHash,
+      status: res.receipt.status,
+      executionResult: res.receipt.executionResult,
+      returnOrError: res.receipt.returnReadable,
+      votes: res.receipt.votes || [],
+      expected: 'ADMITTED:EDGE_0_1 (labels {0: UNDEC, 1: UNDEC})',
+      actual: `${ret} (0=${c3.labels['0']}, 1=${c3.labels['1']})`,
+      expectedFailure: false,
+      readBack: c3
+    };
+    recordTx(step17);
+  } else {
+    console.log(`[SKIP] Step 17 already executed: ${step17.hash}`);
   }
 
   // ---------------------------------------------------------------------------
-  // Wait for Deadlines to Expire
+  // Wait for Deadlines to Expire (Cases 1, 2, 3)
   // ---------------------------------------------------------------------------
-  console.log('\n--- WAITING FOR CASE DEADLINES TO EXPIRE ---');
+  console.log('\n--- WAITING FOR CASE DEADLINES TO EXPIRE (Cases 1, 2, 3) ---');
   const c1Final = JSON.parse(await readContractWithRetry(client1, { address: mainAddress, functionName: 'get_case', args: [1] }));
   const c2Final = JSON.parse(await readContractWithRetry(client1, { address: mainAddress, functionName: 'get_case', args: [2] }));
+  const c3Final = JSON.parse(await readContractWithRetry(client1, { address: mainAddress, functionName: 'get_case', args: [3] }));
   const d1 = Number(c1Final.deadline);
   const d2 = Number(c2Final.deadline);
-  const maxDeadline = Math.max(d1, d2);
+  const d3 = Number(c3Final.deadline);
+  const maxDeadline = Math.max(d1, d2, d3);
 
   console.log(`Case 1 Deadline: ${d1} (extensions used: ${c1Final.extensions_used})`);
   console.log(`Case 2 Deadline: ${d2} (extensions used: ${c2Final.extensions_used})`);
+  console.log(`Case 3 Deadline: ${d3} (extensions used: ${c3Final.extensions_used})`);
   console.log(`Target Deadline: ${maxDeadline}`);
 
   while (true) {
@@ -792,12 +924,12 @@ async function main() {
   }
 
   // ---------------------------------------------------------------------------
-  // Post-Deadline Resolutions
+  // Post-Deadline Resolutions (Steps 18, 19, 20, 21)
   // ---------------------------------------------------------------------------
-  // Step 12: resolve(case1) -> expect UPHELD
-  let step12 = getRecordedStep(12);
-  if (!step12) {
-    console.log('\n[Step 12] resolve Case 1 -> expect UPHELD...');
+  // Step 18: resolve(case1) -> expect UPHELD
+  let step18 = getRecordedStep(18);
+  if (!step18) {
+    console.log('\n[Step 18] resolve Case 1 -> expect UPHELD...');
     const res = await safeWrite(client1, {
       address: mainAddress,
       functionName: 'resolve',
@@ -809,12 +941,12 @@ async function main() {
 
     const ret = String(normalizeReturn(res.receipt.returnReadable));
     if (!ret.includes('UPHELD') || c1.status !== 'UPHELD') {
-      console.error(`STOP RULE: Step 12 expected UPHELD, got ret=${ret}, status=${c1.status}`);
+      console.error(`STOP RULE: Step 18 expected UPHELD, got ret=${ret}, status=${c1.status}`);
       process.exit(1);
     }
 
-    step12 = {
-      step: 12,
+    step18 = {
+      step: 18,
       scenario: 'Final Resolutions',
       method: 'resolve',
       args: [1],
@@ -828,15 +960,15 @@ async function main() {
       expectedFailure: false,
       readBack: c1
     };
-    recordTx(step12);
+    recordTx(step18);
   } else {
-    console.log(`[SKIP] Step 12 already executed: ${step12.hash}`);
+    console.log(`[SKIP] Step 18 already executed: ${step18.hash}`);
   }
 
-  // Step 13: resolve(case2) -> expect UNRESOLVED
-  let step13 = getRecordedStep(13);
-  if (!step13) {
-    console.log('\n[Step 13] resolve Case 2 -> expect UNRESOLVED...');
+  // Step 19: resolve(case2) -> expect OVERTURNED (root OUT; only B's edge exists)
+  let step19 = getRecordedStep(19);
+  if (!step19) {
+    console.log('\n[Step 19] resolve Case 2 -> expect OVERTURNED...');
     const res = await safeWrite(client1, {
       address: mainAddress,
       functionName: 'resolve',
@@ -847,13 +979,13 @@ async function main() {
     console.log('Case 2 resolution readback:', JSON.stringify(c2));
 
     const ret = String(normalizeReturn(res.receipt.returnReadable));
-    if (!ret.includes('UNRESOLVED') || c2.status !== 'UNRESOLVED') {
-      console.error(`STOP RULE: Step 13 expected UNRESOLVED, got ret=${ret}, status=${c2.status}`);
+    if (!ret.includes('OVERTURNED') || c2.status !== 'OVERTURNED') {
+      console.error(`STOP RULE: Step 19 expected OVERTURNED, got ret=${ret}, status=${c2.status}`);
       process.exit(1);
     }
 
-    step13 = {
-      step: 13,
+    step19 = {
+      step: 19,
       scenario: 'Final Resolutions',
       method: 'resolve',
       args: [2],
@@ -862,20 +994,59 @@ async function main() {
       executionResult: res.receipt.executionResult,
       returnOrError: res.receipt.returnReadable,
       votes: res.receipt.votes || [],
-      expected: 'UNRESOLVED',
+      expected: 'OVERTURNED',
       actual: c2.status,
       expectedFailure: false,
       readBack: c2
     };
-    recordTx(step13);
+    recordTx(step19);
   } else {
-    console.log(`[SKIP] Step 13 already executed: ${step13.hash}`);
+    console.log(`[SKIP] Step 19 already executed: ${step19.hash}`);
   }
 
-  // Step 14: resolve(case1) again -> expect UserError (final)
-  let step14 = getRecordedStep(14);
-  if (!step14) {
-    console.log('\n[Step 14 - EXPECTED FAILURE] resolve Case 1 again (already resolved)...');
+  // Step 20: resolve(case3) -> expect UNRESOLVED
+  let step20 = getRecordedStep(20);
+  if (!step20) {
+    console.log('\n[Step 20] resolve Case 3 -> expect UNRESOLVED...');
+    const res = await safeWrite(client1, {
+      address: mainAddress,
+      functionName: 'resolve',
+      args: [3],
+      expectSuccess: true
+    });
+    const c3 = JSON.parse(await readContractWithRetry(client1, { address: mainAddress, functionName: 'get_case', args: [3] }));
+    console.log('Case 3 resolution readback:', JSON.stringify(c3));
+
+    const ret = String(normalizeReturn(res.receipt.returnReadable));
+    if (!ret.includes('UNRESOLVED') || c3.status !== 'UNRESOLVED') {
+      console.error(`STOP RULE: Step 20 expected UNRESOLVED, got ret=${ret}, status=${c3.status}`);
+      process.exit(1);
+    }
+
+    step20 = {
+      step: 20,
+      scenario: 'Final Resolutions',
+      method: 'resolve',
+      args: [3],
+      hash: res.txHash,
+      status: res.receipt.status,
+      executionResult: res.receipt.executionResult,
+      returnOrError: res.receipt.returnReadable,
+      votes: res.receipt.votes || [],
+      expected: 'UNRESOLVED',
+      actual: c3.status,
+      expectedFailure: false,
+      readBack: c3
+    };
+    recordTx(step20);
+  } else {
+    console.log(`[SKIP] Step 20 already executed: ${step20.hash}`);
+  }
+
+  // Step 21: resolve(case1) again -> expect UserError (final)
+  let step21 = getRecordedStep(21);
+  if (!step21) {
+    console.log('\n[Step 21 - EXPECTED FAILURE] resolve Case 1 again (already resolved)...');
     const res = await safeWrite(client1, {
       address: mainAddress,
       functionName: 'resolve',
@@ -886,12 +1057,12 @@ async function main() {
     console.log('Double resolve error received:', errStr);
 
     if (!errStr.includes('CASE_CANNOT_RESOLVE')) {
-      console.error('STOP RULE: Step 14 did not fail with CASE_CANNOT_RESOLVE!');
+      console.error('STOP RULE: Step 21 did not fail with CASE_CANNOT_RESOLVE!');
       process.exit(1);
     }
 
-    step14 = {
-      step: 14,
+    step21 = {
+      step: 21,
       scenario: 'Expected Failures / Abuse Blocked',
       method: 'resolve',
       args: [1],
@@ -905,9 +1076,9 @@ async function main() {
       expectedFailure: true,
       readBack: 'Double resolution rejected'
     };
-    recordTx(step14);
+    recordTx(step21);
   } else {
-    console.log(`[SKIP] Step 14 already executed: ${step14.hash}`);
+    console.log(`[SKIP] Step 21 already executed: ${step21.hash}`);
   }
 
   // ---------------------------------------------------------------------------

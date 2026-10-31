@@ -516,7 +516,7 @@
         "0xb9ed1258763dfFC83356b15e8A20236B86E42ba2": "agree"
       },
       "expected": "ADMITTED:EDGE_0_1 (labels both UNDEC)",
-      "actual": "REJECTED:FETCH_OK:PREMISE_SUPPORTED:EDGE_NO_DEFEAT (Consensus: MAJORITY_DISAGREE; labels 0=OUT, 1=IN)",
+      "actual": "failed_attempt: demo-design issue. Root arg text lacked the rebuttal (only the evidence had it); consensus MAJORITY_DISAGREE; no state change (edge not added)",
       "expectedFailure": false,
       "stopRuleTriggered": true,
       "readBack": {
@@ -533,12 +533,134 @@
             "to": 0
           }
         ]
+      },
+      "note": "failed_attempt: demo-design issue. Root arg text lacked the rebuttal (only the evidence had it); consensus MAJORITY_DISAGREE; no state change (edge not added)"
+    },
+    {
+      "step": 15,
+      "scenario": "Case 3: Mutual Attack (Fail Closed)",
+      "method": "open_case",
+      "args": [
+        "Compound K-17 melts at 120 \u00b0C; Lab B's 98 \u00b0C reading is invalid because Lab B's thermometer calibration certificate had expired.",
+        "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e3_lab_a.txt",
+        1793449731,
+        60
+      ],
+      "hash": "0x90d27b85ec85ed873a96131cac41f459f7dc0ea0e7866defeeeddf37c047ee89",
+      "status": "FINALIZED",
+      "executionResult": "SUCCESS",
+      "consensusResult": "MAJORITY_AGREE",
+      "returnOrError": "3",
+      "votes": {
+        "0x336458747913FE397be82c4F0926ACeB3ab13618": "agree",
+        "0x4619C8420D50c9dE477DB2CBb7b4863A041688CB": "agree",
+        "0x5847AF34a4e5bA96490f8c883598f68EC9B0B907": "agree"
+      },
+      "expected": "OPEN (case_id 3, root IN)",
+      "actual": "OPEN (root IN)",
+      "expectedFailure": false,
+      "readBack": {
+        "id": 3,
+        "status": "OPEN",
+        "labels": {
+          "0": "IN"
+        },
+        "totalArgs": 1,
+        "edges": []
+      }
+    },
+    {
+      "step": 16,
+      "scenario": "Case 3: Mutual Attack (Fail Closed)",
+      "method": "attack",
+      "args": [
+        3,
+        0,
+        "K-17 melts at 98 \u00b0C; Lab A's 120 \u00b0C reading is invalid because its measured batch 7 was contaminated.",
+        "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e4_lab_b.txt"
+      ],
+      "hash": "0xe4c32ef77e327614f2302a9641dccd3790db9caec794276208189e10d562f9f7",
+      "status": "FINALIZED",
+      "executionResult": "SUCCESS",
+      "consensusResult": "MAJORITY_DISAGREE",
+      "returnOrError": "REJECTED:FETCH_OK:PREMISE_UNSUPPORTED:EDGE_NO_DEFEAT",
+      "votes": {
+        "0x045291B293B9D68969c18B6637A8258038cf787A": "disagree",
+        "0x336458747913FE397be82c4F0926ACeB3ab13618": "disagree",
+        "0x5e84e17266a193077728229751aC8A1dD24be146": "disagree",
+        "0x9C182DE7F93AdbE8ee3D62570613eC23c5683cAc": "agree",
+        "0xb04cdDC4a6Ff6A0aDF715cfe00Fa307b901cebD4": "idle"
+      },
+      "expected": "ADMITTED:ARG_1 (root OUT)",
+      "actual": "REJECTED:FETCH_OK:PREMISE_UNSUPPORTED:EDGE_NO_DEFEAT (Consensus: MAJORITY_DISAGREE; root remains IN)",
+      "expectedFailure": false,
+      "stopRuleTriggered": true,
+      "readBack": {
+        "id": 3,
+        "status": "OPEN",
+        "labels": {
+          "0": "IN"
+        },
+        "totalArgs": 1,
+        "edges": []
       }
     }
   ],
   "stopRule": {
     "triggered": true,
-    "triggerStep": 11,
-    "reason": "Step 11 add_edge(2, 0, 1) was rejected with consensus MAJORITY_DISAGREE (leader LLM returned REJECTED:FETCH_OK:PREMISE_SUPPORTED:EDGE_NO_DEFEAT). Stopped execution immediately per STOP RULE."
+    "triggerStep": 16,
+    "reason": "Step 16 attack(3, 0, ...) landed differently than expected: consensus finalized as MAJORITY_DISAGREE (leader LLM evaluated PREMISE_UNSUPPORTED / EDGE_NO_DEFEAT; 3 validators voted disagree). Stopped immediately per STOP RULE."
+  },
+  "cases": {
+    "case1": {
+      "id": 1,
+      "claim": "tinyjson v2.0.0 is backward compatible with the v1.x parse() API.",
+      "status": "OPEN",
+      "deadline": 1793447293,
+      "labels": {
+        "0": "IN",
+        "1": "OUT",
+        "2": "IN"
+      },
+      "edges": [
+        {
+          "from": 1,
+          "to": 0
+        },
+        {
+          "from": 2,
+          "to": 1
+        }
+      ],
+      "totalArgs": 3
+    },
+    "case2": {
+      "id": 2,
+      "claim": "Compound K-17 melts at 120 \u00b0C.",
+      "status": "OPEN",
+      "deadline": 1793448102,
+      "labels": {
+        "0": "OUT",
+        "1": "IN"
+      },
+      "edges": [
+        {
+          "from": 1,
+          "to": 0
+        }
+      ],
+      "totalArgs": 2
+    },
+    "case3": {
+      "id": 3,
+      "claim": "Compound K-17 melts at 120 \u00b0C; Lab B's 98 \u00b0C reading is invalid because Lab B's thermometer calibration certificate had expired.",
+      "status": "OPEN",
+      "deadline": 1793449731,
+      "labels": {
+        "0": "IN"
+      },
+      "edges": [],
+      "totalArgs": 1
+    }
   }
 }
