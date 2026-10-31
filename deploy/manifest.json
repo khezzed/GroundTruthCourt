@@ -384,7 +384,7 @@
       "scenario": "Case 2: Mutual Attack",
       "method": "open_case",
       "args": [
-        "Compound K-17 melts at 120 \u00c2\u00b0C.",
+        "Compound K-17 melts at 120 °C.",
         "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e3_lab_a.txt",
         1793448102,
         60
@@ -406,7 +406,7 @@
       "readBack": {
         "id": 2,
         "proposer": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
-        "claim": "Compound K-17 melts at 120 \u00c2\u00b0C.",
+        "claim": "Compound K-17 melts at 120 °C.",
         "deadline": 1793448102,
         "window": 60,
         "extensions_used": 0,
@@ -416,7 +416,7 @@
           {
             "id": 0,
             "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
-            "text": "Compound K-17 melts at 120 \u00c2\u00b0C.",
+            "text": "Compound K-17 melts at 120 °C.",
             "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e3_lab_a.txt",
             "evidence_digest": "118e919f3c682e1c1ae7b9ca039b289fd9216807d4ed3dc64a125f7ca09df452"
           }
@@ -436,7 +436,7 @@
       "args": [
         2,
         0,
-        "K-17 melts at 98 \u00c2\u00b0C; Lab A's 120 \u00c2\u00b0C reading is invalid because its measured batch 7 was contaminated.",
+        "K-17 melts at 98 °C; Lab A's 120 °C reading is invalid because its measured batch 7 was contaminated.",
         "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e4_lab_b.txt"
       ],
       "hash": "0x2c82d672e342962983758e6ffa9e4ea686066fbef28ac0d0698caf2e51b9bda5",
@@ -456,7 +456,7 @@
       "readBack": {
         "id": 2,
         "proposer": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
-        "claim": "Compound K-17 melts at 120 \u00c2\u00b0C.",
+        "claim": "Compound K-17 melts at 120 °C.",
         "deadline": 1793448102,
         "window": 60,
         "extensions_used": 0,
@@ -466,14 +466,14 @@
           {
             "id": 0,
             "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
-            "text": "Compound K-17 melts at 120 \u00c2\u00b0C.",
+            "text": "Compound K-17 melts at 120 °C.",
             "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e3_lab_a.txt",
             "evidence_digest": "118e919f3c682e1c1ae7b9ca039b289fd9216807d4ed3dc64a125f7ca09df452"
           },
           {
             "id": 1,
             "author": "0xBeAd63dC66143c8FcD09439e820AB29d7d63c705",
-            "text": "K-17 melts at 98 \u00c2\u00b0C; Lab A's 120 \u00c2\u00b0C reading is invalid because its measured batch 7 was contaminated.",
+            "text": "K-17 melts at 98 °C; Lab A's 120 °C reading is invalid because its measured batch 7 was contaminated.",
             "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e4_lab_b.txt",
             "evidence_digest": "2c4a694ec9e04d8128455639bf05b57e0917af9e2a65d427522091708fd75849"
           }
@@ -517,8 +517,8 @@
       },
       "expected": "ADMITTED:EDGE_0_1 (labels both UNDEC)",
       "actual": "failed_attempt: demo-design issue. Root arg text lacked the rebuttal (only the evidence had it); consensus MAJORITY_DISAGREE; no state change (edge not added)",
+      "note": "failed_attempt: demo-design issue. Root arg text lacked the rebuttal (only the evidence had it); consensus MAJORITY_DISAGREE; no state change (edge not added)",
       "expectedFailure": false,
-      "stopRuleTriggered": true,
       "readBack": {
         "id": 2,
         "status": "OPEN",
@@ -533,15 +533,14 @@
             "to": 0
           }
         ]
-      },
-      "note": "failed_attempt: demo-design issue. Root arg text lacked the rebuttal (only the evidence had it); consensus MAJORITY_DISAGREE; no state change (edge not added)"
+      }
     },
     {
       "step": 15,
       "scenario": "Case 3: Mutual Attack (Fail Closed)",
       "method": "open_case",
       "args": [
-        "Compound K-17 melts at 120 \u00b0C; Lab B's 98 \u00b0C reading is invalid because Lab B's thermometer calibration certificate had expired.",
+        "Compound K-17 melts at 120 °C; Lab B's 98 °C reading is invalid because Lab B's thermometer calibration certificate had expired.",
         "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e3_lab_a.txt",
         1793449731,
         60
@@ -549,24 +548,41 @@
       "hash": "0x90d27b85ec85ed873a96131cac41f459f7dc0ea0e7866defeeeddf37c047ee89",
       "status": "FINALIZED",
       "executionResult": "SUCCESS",
-      "consensusResult": "MAJORITY_AGREE",
       "returnOrError": "3",
       "votes": {
-        "0x336458747913FE397be82c4F0926ACeB3ab13618": "agree",
-        "0x4619C8420D50c9dE477DB2CBb7b4863A041688CB": "agree",
-        "0x5847AF34a4e5bA96490f8c883598f68EC9B0B907": "agree"
+        "0x045291B293B9D68969c18B6637A8258038cf787A": "agree",
+        "0x5e84e17266a193077728229751aC8A1dD24be146": "idle",
+        "0xF7D08d12dB37D3e02D1833b5cB7e56B07F114186": "agree",
+        "0xb9ed1258763dfFC83356b15e8A20236B86E42ba2": "agree",
+        "0xcab45E3fe9cC9592B5C378E47734E022b7Df80c9": "idle"
       },
       "expected": "OPEN (case_id 3, root IN)",
       "actual": "OPEN (root IN)",
       "expectedFailure": false,
       "readBack": {
         "id": 3,
+        "proposer": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+        "claim": "Compound K-17 melts at 120 °C; Lab B's 98 °C reading is invalid because Lab B's thermometer calibration certificate had expired.",
+        "deadline": 1793449731,
+        "window": 60,
+        "extensions_used": 0,
+        "attempts": 0,
         "status": "OPEN",
+        "args": [
+          {
+            "id": 0,
+            "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+            "text": "Compound K-17 melts at 120 °C; Lab B's 98 °C reading is invalid because Lab B's thermometer calibration certificate had expired.",
+            "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e3_lab_a.txt",
+            "evidence_digest": "118e919f3c682e1c1ae7b9ca039b289fd9216807d4ed3dc64a125f7ca09df452"
+          }
+        ],
+        "edges": [],
+        "replay_keys": [],
         "labels": {
           "0": "IN"
         },
-        "totalArgs": 1,
-        "edges": []
+        "fetch_status": "OK"
       }
     },
     {
@@ -576,7 +592,7 @@
       "args": [
         3,
         0,
-        "K-17 melts at 98 \u00b0C; Lab A's 120 \u00b0C reading is invalid because its measured batch 7 was contaminated.",
+        "K-17 melts at 98 °C; Lab A's 120 °C reading is invalid because its measured batch 7 was contaminated.",
         "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e4_lab_b.txt"
       ],
       "hash": "0xe4c32ef77e327614f2302a9641dccd3790db9caec794276208189e10d562f9f7",
@@ -592,7 +608,7 @@
         "0xb04cdDC4a6Ff6A0aDF715cfe00Fa307b901cebD4": "idle"
       },
       "expected": "ADMITTED:ARG_1 (root OUT)",
-      "actual": "REJECTED:FETCH_OK:PREMISE_UNSUPPORTED:EDGE_NO_DEFEAT (Consensus: MAJORITY_DISAGREE; root remains IN)",
+      "actual": "consensus_non_agreement: leader GLM judged PREMISE_UNSUPPORTED on evidence that states the premise verbatim; majority disagreed; no state change",
       "expectedFailure": false,
       "stopRuleTriggered": true,
       "readBack": {
@@ -603,6 +619,270 @@
         },
         "totalArgs": 1,
         "edges": []
+      },
+      "note": "consensus_non_agreement: leader GLM judged PREMISE_UNSUPPORTED on evidence that states the premise verbatim; majority disagreed; no state change"
+    },
+    {
+      "step": 18,
+      "scenario": "Resolutions",
+      "method": "resolve",
+      "args": [
+        1
+      ],
+      "hash": "0x4afcd3ad151279fe99c0c2d89a415d5a1fda87f1e15137081324ba73f8abadcb",
+      "status": "FINALIZED",
+      "executionResult": "SUCCESS",
+      "consensusResult": "MAJORITY_AGREE",
+      "returnOrError": "UPHELD",
+      "votes": {
+        "0x4619C8420D50c9dE477DB2CBb7b4863A041688CB": "idle",
+        "0x63d72fE364368491E62a42B9C73c317Ce1ca8434": "agree",
+        "0x9C182DE7F93AdbE8ee3D62570613eC23c5683cAc": "agree",
+        "0xF7D08d12dB37D3e02D1833b5cB7e56B07F114186": "agree",
+        "0xb9ed1258763dfFC83356b15e8A20236B86E42ba2": "idle"
+      },
+      "expected": "UPHELD",
+      "actual": "UPHELD",
+      "expectedFailure": false,
+      "readBack": {
+        "id": 1,
+        "proposer": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+        "claim": "tinyjson v2.0.0 is backward compatible with the v1.x parse() API.",
+        "deadline": 1793447293,
+        "window": 60,
+        "extensions_used": 0,
+        "attempts": 3,
+        "status": "UPHELD",
+        "args": [
+          {
+            "id": 0,
+            "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+            "text": "tinyjson v2.0.0 is backward compatible with the v1.x parse() API.",
+            "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e0_release_notes_v2.txt",
+            "evidence_digest": "0a7f02b7682dfff51cd60fd3e7942c236df4a691cd321dc6851a523bf9b840c3"
+          },
+          {
+            "id": 1,
+            "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+            "text": "v2.0.0 removed the strict parameter from parse(), so v1.x callers passing strict=True break.",
+            "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e1_rc1_changelog.txt",
+            "evidence_digest": "2b025100742f284fe2013eb29a35a4529811bab79dd079c0eb1806c71b252eaf"
+          },
+          {
+            "id": 2,
+            "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+            "text": "The strict removal was only in v2.0.0-rc1 and was reverted before the v2.0.0 final tag, which still ships parse(text, strict=False).",
+            "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e2_final_tag_changelog.txt",
+            "evidence_digest": "685e4c5622446845ecc05fc48668ce1a493fd14417a800a094d9bd288290a974"
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "to": 0
+          },
+          {
+            "from": 2,
+            "to": 1
+          }
+        ],
+        "replay_keys": [
+          "5ffe44e93661979883576a9b6117962b47e4628b06d58ff47c42d887dcaaed82",
+          "1fe7c6ce91501e8e8aad0c0b4b0223b9f7e944a2b639f0ee1ac4e98676c9351b",
+          "bbb5ebef6adf4fdbf4a1b597ac2830b898f8723815e700ff5d778eb8722e8a89"
+        ],
+        "labels": {
+          "0": "IN",
+          "1": "OUT",
+          "2": "IN"
+        },
+        "fetch_status": "OK"
+      }
+    },
+    {
+      "step": 19,
+      "scenario": "Resolutions",
+      "method": "resolve",
+      "args": [
+        2
+      ],
+      "hash": "0xaf5e1605601398b10aac351de54f46b731f9729667cca52eb90f9fa8b2a69a14",
+      "status": "FINALIZED",
+      "executionResult": "SUCCESS",
+      "consensusResult": "MAJORITY_AGREE",
+      "returnOrError": "OVERTURNED",
+      "votes": {
+        "0x045291B293B9D68969c18B6637A8258038cf787A": "idle",
+        "0x4441Ebe37E72c039B73f1D6CF8C6DEe277FE547a": "agree",
+        "0x5847AF34a4e5bA96490f8c883598f68EC9B0B907": "idle",
+        "0x63d72fE364368491E62a42B9C73c317Ce1ca8434": "agree",
+        "0xb9ed1258763dfFC83356b15e8A20236B86E42ba2": "agree"
+      },
+      "expected": "OVERTURNED",
+      "actual": "OVERTURNED",
+      "expectedFailure": false,
+      "readBack": {
+        "id": 2,
+        "proposer": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+        "claim": "Compound K-17 melts at 120 °C.",
+        "deadline": 1793448102,
+        "window": 60,
+        "extensions_used": 0,
+        "attempts": 1,
+        "status": "OVERTURNED",
+        "args": [
+          {
+            "id": 0,
+            "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+            "text": "Compound K-17 melts at 120 °C.",
+            "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e3_lab_a.txt",
+            "evidence_digest": "118e919f3c682e1c1ae7b9ca039b289fd9216807d4ed3dc64a125f7ca09df452"
+          },
+          {
+            "id": 1,
+            "author": "0xBeAd63dC66143c8FcD09439e820AB29d7d63c705",
+            "text": "K-17 melts at 98 °C; Lab A's 120 °C reading is invalid because its measured batch 7 was contaminated.",
+            "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e4_lab_b.txt",
+            "evidence_digest": "2c4a694ec9e04d8128455639bf05b57e0917af9e2a65d427522091708fd75849"
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "to": 0
+          }
+        ],
+        "replay_keys": [
+          "1cb1b033a4b6dd89850e49b2f0c337559f9a63f10f5e0cb88f3d278bf9e9b85b"
+        ],
+        "labels": {
+          "0": "OUT",
+          "1": "IN"
+        },
+        "fetch_status": "OK"
+      }
+    },
+    {
+      "step": 21,
+      "scenario": "Expected Failures / Abuse Blocked",
+      "method": "resolve",
+      "args": [
+        1
+      ],
+      "hash": "0x56b8d27706b624746e30015a12d21a797b31128997a22be8821dc436efbb370e",
+      "status": "FINALIZED",
+      "executionResult": "ERROR",
+      "consensusResult": "MAJORITY_AGREE",
+      "returnOrError": "\"CASE_CANNOT_RESOLVE_STATUS_UPHELD\"",
+      "votes": {
+        "0x0eb3859451817bC25Cc717D4F676D54D0D3aD0aE": "agree",
+        "0x4868b172ddEBC18b5219aaCeAB77ae0Df330c83A": "idle",
+        "0x5D9Ee6E9aAF2F0b739314A52dd9Da57cd8866dA8": "idle",
+        "0x63d72fE364368491E62a42B9C73c317Ce1ca8434": "agree",
+        "0xb04cdDC4a6Ff6A0aDF715cfe00Fa307b901cebD4": "agree"
+      },
+      "expected": "UserError: CASE_CANNOT_RESOLVE_STATUS_UPHELD",
+      "actual": "\"CASE_CANNOT_RESOLVE_STATUS_UPHELD\"",
+      "expectedFailure": true,
+      "readBack": "Double resolution rejected"
+    },
+    {
+      "step": "16b",
+      "scenario": "Case 3: Mutual Attack (Fail Closed)",
+      "method": "attack",
+      "args": [
+        3,
+        0,
+        "K-17 melts at 98 °C; Lab A's 120 °C reading is invalid because its measured batch 7 was contaminated.",
+        "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e4_lab_b.txt"
+      ],
+      "hash": "0x78ac190d6ffabb67f67e19b9a055d9f5940a409fc6cdc9f9f32a030a1fa206da",
+      "status": "FINALIZED",
+      "executionResult": "ERROR",
+      "consensusResult": "MAJORITY_AGREE",
+      "returnOrError": "DEADLINE_EXPIRED",
+      "votes": {
+        "0x045291B293B9D68969c18B6637A8258038cf787A": "idle",
+        "0x0eb3859451817bC25Cc717D4F676D54D0D3aD0aE": "agree",
+        "0x4441Ebe37E72c039B73f1D6CF8C6DEe277FE547a": "agree",
+        "0x5e84e17266a193077728229751aC8A1dD24be146": "idle",
+        "0xB4EE99165ffe987E64B7b72e45a753309c501eef": "agree"
+      },
+      "expected": "ADMITTED:ARG_1 (root OUT)",
+      "actual": "16b: resubmission after consensus non-agreement (no judgment was finalized in 16): DEADLINE_EXPIRED (Case 3 deadline expired during operator turn)",
+      "expectedFailure": false,
+      "readBack": {
+        "id": 3,
+        "proposer": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+        "claim": "Compound K-17 melts at 120 °C; Lab B's 98 °C reading is invalid because Lab B's thermometer calibration certificate had expired.",
+        "deadline": 1793449731,
+        "window": 60,
+        "extensions_used": 0,
+        "attempts": 0,
+        "status": "OPEN",
+        "args": [
+          {
+            "id": 0,
+            "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+            "text": "Compound K-17 melts at 120 °C; Lab B's 98 °C reading is invalid because Lab B's thermometer calibration certificate had expired.",
+            "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e3_lab_a.txt",
+            "evidence_digest": "118e919f3c682e1c1ae7b9ca039b289fd9216807d4ed3dc64a125f7ca09df452"
+          }
+        ],
+        "edges": [],
+        "replay_keys": [],
+        "labels": {
+          "0": "IN"
+        },
+        "fetch_status": "OK"
+      }
+    },
+    {
+      "step": 20,
+      "scenario": "Final Resolutions",
+      "method": "resolve",
+      "args": [
+        3
+      ],
+      "hash": "0xeeef3d562ae3af14d472b85ef4d055236d308a32006fb9f8d162ab61ea232d66",
+      "status": "FINALIZED",
+      "executionResult": "SUCCESS",
+      "consensusResult": "MAJORITY_AGREE",
+      "returnOrError": "UPHELD",
+      "votes": {
+        "0x378aED3bA912Ce77C3C66155961A7e61C2fE8F3B": "agree",
+        "0x5847AF34a4e5bA96490f8c883598f68EC9B0B907": "agree",
+        "0x5D9Ee6E9aAF2F0b739314A52dd9Da57cd8866dA8": "agree",
+        "0x9C182DE7F93AdbE8ee3D62570613eC23c5683cAc": "agree",
+        "0xB4EE99165ffe987E64B7b72e45a753309c501eef": "agree"
+      },
+      "expected": "UPHELD",
+      "actual": "UPHELD",
+      "expectedFailure": false,
+      "readBack": {
+        "id": 3,
+        "proposer": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+        "claim": "Compound K-17 melts at 120 °C; Lab B's 98 °C reading is invalid because Lab B's thermometer calibration certificate had expired.",
+        "deadline": 1793449731,
+        "window": 60,
+        "extensions_used": 0,
+        "attempts": 0,
+        "status": "UPHELD",
+        "args": [
+          {
+            "id": 0,
+            "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+            "text": "Compound K-17 melts at 120 °C; Lab B's 98 °C reading is invalid because Lab B's thermometer calibration certificate had expired.",
+            "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e3_lab_a.txt",
+            "evidence_digest": "118e919f3c682e1c1ae7b9ca039b289fd9216807d4ed3dc64a125f7ca09df452"
+          }
+        ],
+        "edges": [],
+        "replay_keys": [],
+        "labels": {
+          "0": "IN"
+        },
+        "fetch_status": "OK"
       }
     }
   ],
@@ -614,14 +894,36 @@
   "cases": {
     "case1": {
       "id": 1,
+      "proposer": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
       "claim": "tinyjson v2.0.0 is backward compatible with the v1.x parse() API.",
-      "status": "OPEN",
       "deadline": 1793447293,
-      "labels": {
-        "0": "IN",
-        "1": "OUT",
-        "2": "IN"
-      },
+      "window": 60,
+      "extensions_used": 0,
+      "attempts": 3,
+      "status": "UPHELD",
+      "args": [
+        {
+          "id": 0,
+          "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+          "text": "tinyjson v2.0.0 is backward compatible with the v1.x parse() API.",
+          "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e0_release_notes_v2.txt",
+          "evidence_digest": "0a7f02b7682dfff51cd60fd3e7942c236df4a691cd321dc6851a523bf9b840c3"
+        },
+        {
+          "id": 1,
+          "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+          "text": "v2.0.0 removed the strict parameter from parse(), so v1.x callers passing strict=True break.",
+          "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e1_rc1_changelog.txt",
+          "evidence_digest": "2b025100742f284fe2013eb29a35a4529811bab79dd079c0eb1806c71b252eaf"
+        },
+        {
+          "id": 2,
+          "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+          "text": "The strict removal was only in v2.0.0-rc1 and was reverted before the v2.0.0 final tag, which still ships parse(text, strict=False).",
+          "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e2_final_tag_changelog.txt",
+          "evidence_digest": "685e4c5622446845ecc05fc48668ce1a493fd14417a800a094d9bd288290a974"
+        }
+      ],
       "edges": [
         {
           "from": 1,
@@ -632,35 +934,82 @@
           "to": 1
         }
       ],
-      "totalArgs": 3
+      "replay_keys": [
+        "5ffe44e93661979883576a9b6117962b47e4628b06d58ff47c42d887dcaaed82",
+        "1fe7c6ce91501e8e8aad0c0b4b0223b9f7e944a2b639f0ee1ac4e98676c9351b",
+        "bbb5ebef6adf4fdbf4a1b597ac2830b898f8723815e700ff5d778eb8722e8a89"
+      ],
+      "labels": {
+        "0": "IN",
+        "1": "OUT",
+        "2": "IN"
+      },
+      "fetch_status": "OK"
     },
     "case2": {
       "id": 2,
-      "claim": "Compound K-17 melts at 120 \u00b0C.",
-      "status": "OPEN",
+      "proposer": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+      "claim": "Compound K-17 melts at 120 °C.",
       "deadline": 1793448102,
-      "labels": {
-        "0": "OUT",
-        "1": "IN"
-      },
+      "window": 60,
+      "extensions_used": 0,
+      "attempts": 1,
+      "status": "OVERTURNED",
+      "args": [
+        {
+          "id": 0,
+          "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+          "text": "Compound K-17 melts at 120 °C.",
+          "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e3_lab_a.txt",
+          "evidence_digest": "118e919f3c682e1c1ae7b9ca039b289fd9216807d4ed3dc64a125f7ca09df452"
+        },
+        {
+          "id": 1,
+          "author": "0xBeAd63dC66143c8FcD09439e820AB29d7d63c705",
+          "text": "K-17 melts at 98 °C; Lab A's 120 °C reading is invalid because its measured batch 7 was contaminated.",
+          "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e4_lab_b.txt",
+          "evidence_digest": "2c4a694ec9e04d8128455639bf05b57e0917af9e2a65d427522091708fd75849"
+        }
+      ],
       "edges": [
         {
           "from": 1,
           "to": 0
         }
       ],
-      "totalArgs": 2
+      "replay_keys": [
+        "1cb1b033a4b6dd89850e49b2f0c337559f9a63f10f5e0cb88f3d278bf9e9b85b"
+      ],
+      "labels": {
+        "0": "OUT",
+        "1": "IN"
+      },
+      "fetch_status": "OK"
     },
     "case3": {
       "id": 3,
-      "claim": "Compound K-17 melts at 120 \u00b0C; Lab B's 98 \u00b0C reading is invalid because Lab B's thermometer calibration certificate had expired.",
-      "status": "OPEN",
+      "proposer": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+      "claim": "Compound K-17 melts at 120 °C; Lab B's 98 °C reading is invalid because Lab B's thermometer calibration certificate had expired.",
       "deadline": 1793449731,
+      "window": 60,
+      "extensions_used": 0,
+      "attempts": 0,
+      "status": "UPHELD",
+      "args": [
+        {
+          "id": 0,
+          "author": "0x13bd955B020e9efe81BeEf03Bd4B057Ac2465EC3",
+          "text": "Compound K-17 melts at 120 °C; Lab B's 98 °C reading is invalid because Lab B's thermometer calibration certificate had expired.",
+          "evidence_url": "https://raw.githubusercontent.com/khezzed/GroundTruthCourt/757bfe0801412714cc81cbe7092bb4ffafa52f55/evidence/e3_lab_a.txt",
+          "evidence_digest": "118e919f3c682e1c1ae7b9ca039b289fd9216807d4ed3dc64a125f7ca09df452"
+        }
+      ],
+      "edges": [],
+      "replay_keys": [],
       "labels": {
         "0": "IN"
       },
-      "edges": [],
-      "totalArgs": 1
+      "fetch_status": "OK"
     }
   }
 }
