@@ -781,3 +781,59 @@ def test_attack_invalid_evidence_url_raises_without_consuming_attempt():
     assert case_info["attempts"] == 0
     assert len(case_info["replay_keys"]) == 0
 
+
+def test_premise_unsupported_skips_edge_call():
+    """If premise is UNSUPPORTED, edge call is skipped (edge becomes UNCLEAR, exec_prompt called once)."""
+    court = GroundTruthCourt()
+    set_time(1700000000)
+    set_sender(ADDR_PROPOSER)
+
+    mock_web_responses[URL_ROOT] = MockWebResponse(status=200, body=b"Root evidence")
+    mock_web_responses[URL_ATTACK_B] = MockWebResponse(status=200, body=b"B evidence")
+
+    exec_prompts_seen = []
+
+    def llm_handler(prompt: str):
+        exec_prompts_seen.append(prompt)
+        if "Root claim" in prompt or "evidence/root.txt" in prompt:
+            return json.dumps({"premise": "SUPPORTED"})
+        # For attack: return UNSUPPORTED for premise
+        return json.dumps({"premise": "UNSUPPORTED"})
+
+    mock_llm_responses.append(llm_handler)
+
+    case_id = court.open_case("Root claim: Planet Earth is round", URL_ROOT, 1700000000 + 1000, 100)
+    exec_prompts_seen.clear()
+
+    # Now B attacks root with an unsupported premise
+    set_sender(ADDR_ATTACKER_B)
+    res = court.attack(case_id, 0, "B: Unsupported premise", URL_ATTACK_B)
+    assert "PREMISE_UNSUPPORTED" in res
+    assert "EDGE_UNCLEAR" in res
+
+    # In leader and validator, only premise prompt was executed; NO edge prompt (<TARGET_ARGUMENT>) was called!
+    assert len(exec_prompts_seen) == 2  # 1 in leader, 1 in validator
+    for p in exec_prompts_seen:
+        assert "<ARGUMENT>" in p
+        assert "<TARGET_ARGUMENT>" not in p
+
+
+def test_evaluate_argument_locally_skips_edge_on_unsupported():
+    """Directly test _evaluate_argument_locally: premise UNSUPPORTED -> exec_prompt called once, edge is UNCLEAR."""
+    from contracts.ground_truth_court import _evaluate_argument_locally
+
+    mock_web_responses[URL_ATTACK_B] = MockWebResponse(status=200, body=b"B evidence")
+    call_count = [0]
+
+    def count_handler(prompt: str):
+        call_count[0] += 1
+        return json.dumps({"premise": "UNSUPPORTED"})
+
+    mock_llm_responses.append(count_handler)
+
+    res = _evaluate_argument_locally("Dummy claim", "Target text", "Attacker text", URL_ATTACK_B)
+    assert res["premise"] == "UNSUPPORTED"
+    assert res["edge"] == "UNCLEAR"
+    assert call_count[0] == 1  # exec_prompt called exactly once!
+
+
