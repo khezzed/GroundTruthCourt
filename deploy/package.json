@@ -1,0 +1,11 @@
+{
+  "name": "ground-truth-court-deploy",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "deploy:demo": "node deploy_and_demo.mjs"
+  },
+  "dependencies": {
+    "genlayer-js": "^1.2.0"
+  }
+}
