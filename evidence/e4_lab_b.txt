@@ -1,0 +1,5 @@
+# Lab B Report
+
+Lab B report:
+- Compound K-17 melting point measured at 98 °C.
+- Lab A's 120 °C reading is invalid because Lab A's own sample log records contamination of batch 7, the batch they measured.

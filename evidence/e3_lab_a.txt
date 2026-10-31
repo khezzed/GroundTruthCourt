@@ -1,0 +1,5 @@
+# Lab A Report
+
+Lab A report:
+- Compound K-17 melting point measured at 120 °C.
+- Lab B's 98 °C reading is invalid because Lab B's thermometer calibration certificate expired on 2025-01-15 before their measurement.

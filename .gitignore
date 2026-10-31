@@ -1,0 +1,9 @@
+node_modules/
+.env
+.env.*
+deploy/state.json
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.log
+.DS_Store

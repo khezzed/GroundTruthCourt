@@ -1,0 +1,6 @@
+# tinyjson v2.0.0 Release Notes
+
+tinyjson v2.0.0 release notes:
+- The parse() API is unchanged from v1.x.
+- parse(text, strict=False) keeps the same signature.
+- All v1.x call sites continue to work without modification.

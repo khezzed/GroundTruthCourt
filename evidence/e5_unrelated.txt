@@ -1,0 +1,6 @@
+# Chocolate Chip Cookies Recipe
+
+A short recipe for classic chocolate chip cookies:
+- 2 cups flour, 1 cup butter, 1/2 cup sugar, 1 cup chocolate chips.
+- Mix ingredients in a bowl.
+- Bake at 350 °F for 10-12 minutes until golden brown.

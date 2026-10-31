@@ -1,0 +1,6 @@
+# tinyjson Changelog
+
+tinyjson changelog:
+- In v2.0.0 the strict keyword parameter was removed from parse().
+- Callers passing strict=True raise TypeError.
+- This breaks v1.x callers.

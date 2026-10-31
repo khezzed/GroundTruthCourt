@@ -1,0 +1,6 @@
+# tinyjson v2.0.0 Final Tag Changelog
+
+tinyjson v2.0.0 final tag changelog:
+- The removal of strict happened only in v2.0.0-rc1 and was reverted before the v2.0.0 final tag.
+- v2.0.0 final ships parse(text, strict=False).
+- The claim that v2.0.0 removed strict refers to rc1, not the release.
